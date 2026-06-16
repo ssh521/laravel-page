@@ -20,9 +20,33 @@
 - root slug와 alias route 설정 지원
 - HTML 본문 저장
 - SEO meta title, description, canonical URL, OG metadata
+- 페이지 템플릿 선택 및 기본 내용 적용
 - 약관/정책 버전 저장 및 공개
 - `laravel-admin` 관리자 메뉴/권한 seeder
 - `laravel-admin-ui` 레이아웃 기반 관리자 화면
+
+### 공개 상태 의미
+
+| 상태 | 의미 | 공개 URL 노출 | 공개 이력 |
+|------|------|---------------|-----------|
+| `draft` 초안 | 작성 중인 페이지입니다. | 노출 안 함 | 공개 시각을 비웁니다. |
+| `published` 공개 | 방문자가 공개 URL로 볼 수 있는 상태입니다. | 노출 | 최초 공개 시각을 기록하고 유지합니다. |
+| `hidden` 숨김 | 공개했던 페이지를 임시로 내리는 상태입니다. | 노출 안 함 | 기존 공개 시각을 유지합니다. |
+
+### 페이지 템플릿
+
+관리자 페이지 등록/수정 폼에서 템플릿을 선택한 뒤 `적용`하면 제목, slug, 요약, 본문 HTML, SEO 기본값이 입력됩니다.
+
+기본 템플릿:
+
+| 템플릿 | 용도 |
+|--------|------|
+| `company` | 회사소개 |
+| `terms` | 이용약관 |
+| `privacy` | 개인정보처리방침 |
+| `policy` | 운영 정책 |
+
+템플릿은 `config/laravel-page.php`의 `templates` 배열에서 프로젝트별로 수정하거나 추가할 수 있습니다.
 
 ## 설치
 
@@ -262,3 +286,5 @@ php artisan migrate --path=../packages/ssh521/laravel-page/database/migrations -
 - Livewire는 정렬, 모달, 파일 선택, 빠른 상태 변경 같은 보조 UI에만 선택적으로 사용합니다.
 - 방문자 공개 페이지는 SEO와 캐시를 위해 Blade server-rendered page를 기본으로 합니다.
 - 관리자 UI는 `laravel-admin-ui`의 resource pattern을 따릅니다.
+- 관리자 UI 디자인 기준은 [`laravel-admin-ui/docs/admin-ui-design-contract.md`](../laravel-admin-ui/docs/admin-ui-design-contract.md)를 우선합니다.
+- 상세 현대화/디자인 규칙은 [`laravel-admin-ui/docs/admin-design-rules.md`](../laravel-admin-ui/docs/admin-design-rules.md)를 따릅니다.

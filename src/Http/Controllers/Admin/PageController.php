@@ -40,10 +40,13 @@ class PageController extends Controller
 
     public function create(): View
     {
+        $templates = config('laravel-page.templates', []);
+
         return view('laravel-page::admin.pages.create', [
             'page' => new Page(['type' => 'page', 'status' => 'draft']),
             'types' => config('laravel-page.types', []),
             'statuses' => config('laravel-page.statuses', []),
+            'templates' => $templates,
         ]);
     }
 
@@ -70,12 +73,13 @@ class PageController extends Controller
             'page' => $page,
             'types' => config('laravel-page.types', []),
             'statuses' => config('laravel-page.statuses', []),
+            'templates' => config('laravel-page.templates', []),
         ]);
     }
 
     public function update(UpdatePageRequest $request, Page $page): RedirectResponse
     {
-        $page->update($this->pageData($request->validated()));
+        $page->update($this->pageData($request->validated(), $page));
 
         return redirect()
             ->route('page.admin.pages.edit', $page)
@@ -95,12 +99,16 @@ class PageController extends Controller
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    private function pageData(array $data): array
+    private function pageData(array $data, ?Page $page = null): array
     {
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
-        if (($data['status'] ?? null) === 'published') {
-            $data['published_at'] = now();
+        $status = $data['status'] ?? null;
+
+        if ($status === 'published') {
+            $data['published_at'] = $page?->published_at ?: now();
+        } elseif ($status === 'hidden') {
+            $data['published_at'] = $page?->published_at;
         } else {
             $data['published_at'] = null;
         }

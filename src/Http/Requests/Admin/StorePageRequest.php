@@ -25,7 +25,7 @@ class StorePageRequest extends FormRequest
             'body' => ['nullable', 'string'],
             'status' => ['required', 'string', Rule::in(array_keys(config('laravel-page.statuses', [])))],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'template' => ['nullable', 'string', 'max:255'],
+            'template' => ['nullable', 'string', Rule::in(array_keys(config('laravel-page.templates', [])))],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'canonical_url' => ['nullable', 'url', 'max:255'],
