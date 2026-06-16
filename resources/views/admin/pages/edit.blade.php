@@ -11,12 +11,20 @@
 
     <div class="mx-auto w-full max-w-5xl bg-white px-2 py-2 dark:bg-gray-900">
         <div class="px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">페이지 수정</h1>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ $page->title }}</p>
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div class="sm:flex-auto">
+                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 수정</h1>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">{{ $page->title }}</p>
+                </div>
+                <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
+                    <a href="{{ route('page.admin.pages.show', $page) }}" class="inline-flex h-9 items-center justify-center rounded-md border border-gray-300 bg-white px-3 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">
+                        <i class="fa-regular fa-eye mr-2 text-xs" aria-hidden="true"></i>
+                        상세보기
+                    </a>
+                </div>
+            </div>
 
-            @if(session('success'))
-                <div class="mt-6 rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">{{ session('success') }}</div>
-            @endif
+            <x-laravel-admin::admin.session-messages />
 
             <form method="post" action="{{ route('page.admin.pages.update', $page) }}" class="mt-8">
                 @csrf

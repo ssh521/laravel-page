@@ -14,6 +14,7 @@ class DashboardController extends Controller
             'total_pages' => Page::query()->count(),
             'published_pages' => Page::query()->where('status', 'published')->count(),
             'draft_pages' => Page::query()->where('status', 'draft')->count(),
+            'hidden_pages' => Page::query()->where('status', 'hidden')->count(),
             'terms_pages' => Page::query()->whereIn('type', ['terms', 'privacy', 'policy'])->count(),
         ];
 

@@ -14,8 +14,12 @@ class PageVersionController extends Controller
     public function index(Page $page): View
     {
         $versions = $page->versions()->latest()->paginate(20);
+        $publishedVersion = $page->versions()
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->first();
 
-        return view('laravel-page::admin.versions.index', compact('page', 'versions'));
+        return view('laravel-page::admin.versions.index', compact('page', 'versions', 'publishedVersion'));
     }
 
     public function store(Request $request, Page $page): RedirectResponse
