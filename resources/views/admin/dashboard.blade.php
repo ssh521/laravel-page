@@ -61,7 +61,10 @@
                         <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                             <div class="min-w-0">
                                 <a href="{{ route('page.admin.pages.edit', $page) }}" class="font-medium !text-gray-900 hover:!text-indigo-600 hover:no-underline dark:!text-white dark:hover:!text-indigo-300">{{ $page->title }}</a>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">/{{ config('laravel-page.prefix.web', 'pages') }}/{{ $page->slug }}</p>
+                                <a href="{{ route('laravel-page.show', $page->slug) }}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex max-w-full items-center truncate text-sm text-gray-500 hover:!text-indigo-600 hover:no-underline dark:text-gray-400 dark:hover:!text-indigo-300">
+                                    <i class="fa-solid fa-arrow-up-right-from-square mr-1.5 shrink-0 text-xs" aria-hidden="true"></i>
+                                    <span class="truncate">/{{ config('laravel-page.prefix.web', 'pages') }}/{{ $page->slug }}</span>
+                                </a>
                             </div>
                             <span class="inline-flex w-fit items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset {{ $statusBadgeClasses[$page->status] ?? $statusBadgeClasses['hidden'] }}">{{ config("laravel-page.statuses.{$page->status}", $page->status) }}</span>
                         </div>

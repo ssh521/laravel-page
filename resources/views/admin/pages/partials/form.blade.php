@@ -223,21 +223,16 @@
         </div>
     </div>
 
-    <div class="mt-10 flex flex-col gap-4 border-t border-gray-900/10 pt-6 sm:flex-row sm:items-center sm:justify-between md:col-span-12 dark:border-white/10">
-        <div>
-            @if($page->exists)
-                <button type="submit" form="delete-page-form" class="inline-flex h-10 items-center justify-center rounded-md border border-red-300 bg-white px-4 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:border-red-500/40 dark:bg-gray-900 dark:text-red-300 dark:hover:bg-red-500/10">
-                    <i class="fa-regular fa-trash-can mr-2 text-xs" aria-hidden="true"></i>
-                    삭제
-                </button>
-            @endif
-        </div>
-        <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <a href="{{ route('page.admin.pages.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-gray-300 bg-white px-4 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">취소</a>
+    <div class="my-10 border-b border-gray-900/10 md:col-span-12 dark:border-white/10"></div>
+
+    @if($showActions ?? true)
+        <div class="col-span-full flex items-center justify-end gap-x-3">
+            <a href="{{ route('page.admin.pages.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-gray-300 bg-white px-4 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">
+                취소
+            </a>
             <button type="submit" class="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-indigo-600 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
-                <i class="fa-regular fa-floppy-disk mr-2 text-xs" aria-hidden="true"></i>
                 저장
             </button>
         </div>
-    </div>
+    @endif
 </div>

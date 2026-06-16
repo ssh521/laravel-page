@@ -25,13 +25,9 @@
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">/{{ config('laravel-page.prefix.web', 'pages') }}/{{ $page->slug }}</p>
                 </div>
                 <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <a href="{{ route('page.admin.versions.index', $page) }}" class="inline-flex h-9 items-center justify-center rounded-md border border-gray-300 bg-white px-3 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">
-                        <i class="fa-solid fa-clock-rotate-left mr-2 text-xs" aria-hidden="true"></i>
-                        버전
-                    </a>
-                    <a href="{{ route('page.admin.pages.edit', $page) }}" class="inline-flex h-9 items-center justify-center rounded-md bg-indigo-600 px-3 text-sm font-semibold !text-white shadow-sm hover:bg-indigo-500 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
-                        <i class="fa-regular fa-pen-to-square mr-2 text-xs" aria-hidden="true"></i>
-                        수정
+                    <a href="{{ route('page.admin.pages.index') }}" class="inline-flex h-9 items-center justify-center rounded-md border border-gray-300 bg-white px-3 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">
+                        <i class="fa-solid fa-list mr-2 text-xs" aria-hidden="true"></i>
+                        목록
                     </a>
                 </div>
             </div>
@@ -64,8 +60,7 @@
                         <dd class="mt-1 whitespace-pre-line text-sm text-gray-900 dark:text-white">{{ $page->summary ?: '-' }}</dd>
                     </div>
                 </dl>
-                <div class="flex flex-col-reverse gap-2 px-4 py-4 sm:flex-row sm:justify-end sm:px-6">
-                    <a href="{{ route('page.admin.pages.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-gray-300 bg-white px-4 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-900 dark:!text-gray-100 dark:hover:bg-gray-700">목록</a>
+                <div class="flex justify-end px-4 py-4 sm:px-6">
                     <a href="{{ route('page.admin.pages.edit', $page) }}" class="inline-flex h-10 items-center justify-center rounded-md bg-indigo-600 px-4 text-sm font-semibold !text-white shadow-sm hover:bg-indigo-500 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">수정</a>
                 </div>
             </div>

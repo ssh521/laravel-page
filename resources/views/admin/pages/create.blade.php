@@ -1,4 +1,4 @@
-<x-laravel-admin::admin.layouts.admin title="페이지 등록">
+<x-laravel-admin::admin.layouts.admin title="페이지 정보 등록">
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
@@ -13,7 +13,7 @@
         <div class="px-4 py-6 sm:px-6 lg:px-8">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 등록</h1>
+                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 정보 등록</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">공개할 정적/반정적 페이지를 생성합니다.</p>
                 </div>
                 <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
