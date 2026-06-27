@@ -8,53 +8,42 @@
         </x-laravel-admin::admin.admin-header>
     </x-slot>
 
-    <div class="mx-auto w-full max-w-5xl bg-white px-2 py-2 dark:bg-gray-900">
-        <div class="px-4 py-6 sm:px-6 lg:px-8">
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">버전 이력</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">{{ $page->title }}</p>
-                </div>
-                <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <a href="{{ route('page.admin.pages.show', $page) }}" class="inline-flex h-9 items-center justify-center rounded-md border border-gray-300 bg-white px-3 text-sm font-semibold !text-gray-700 shadow-sm hover:bg-gray-50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:!text-gray-100 dark:hover:bg-gray-700">
-                        <i class="fa-regular fa-eye mr-2 text-xs" aria-hidden="true"></i>
+    <x-laravel-admin::admin.page-section>
+            <x-laravel-admin::admin.page-header
+                title="버전 이력"
+                :description="$page->title"
+                :breadcrumbs="[
+                    ['label' => '페이지 목록', 'href' => route('page.admin.pages.index')],
+                    ['label' => $page->title, 'href' => route('page.admin.pages.show', $page)],
+                    ['label' => '버전 이력'],
+                ]"
+            >
+                <x-slot name="actions">
+                    <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="secondary" icon="eye">
                         상세보기
-                    </a>
-                </div>
-            </div>
+                    </x-laravel-admin::admin.action-button>
+                </x-slot>
+            </x-laravel-admin::admin.page-header>
 
             <x-laravel-admin::admin.session-messages />
 
             <div class="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
-                <dl class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">페이지 공개 상태</dt>
-                    <dd class="mt-2">
-                        @if($page->isPublished())
-                            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-500/10 dark:text-green-300 dark:ring-green-500/20">공개 중</span>
-                        @else
-                            <span class="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-600/20 ring-inset dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20">공개 전</span>
-                        @endif
-                    </dd>
-                </dl>
-                <dl class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">현재 공개 버전</dt>
-                    <dd class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
-                        {{ $publishedVersion?->version_label ?: ($publishedVersion ? '버전 #'.$publishedVersion->id : '없음') }}
-                    </dd>
-                    @if($publishedVersion?->published_at)
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $publishedVersion->published_at->format('Y-m-d H:i') }} 공개</p>
+                <x-laravel-admin::admin.card title="페이지 공개 상태">
+                    @if($page->isPublished())
+                        <x-laravel-admin::admin.badge variant="success">공개 중</x-laravel-admin::admin.badge>
+                    @else
+                        <x-laravel-admin::admin.badge variant="warning">공개 전</x-laravel-admin::admin.badge>
                     @endif
-                </dl>
-                <dl class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">저장된 버전</dt>
-                    <dd class="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{{ $versions->total() }}</dd>
-                </dl>
+                </x-laravel-admin::admin.card>
+                <x-laravel-admin::admin.stat
+                    label="현재 공개 버전"
+                    value="{{ $publishedVersion?->version_label ?: ($publishedVersion ? '버전 #'.$publishedVersion->id : '없음') }}"
+                    :description="$publishedVersion?->published_at ? $publishedVersion->published_at->format('Y-m-d H:i').' 공개' : null"
+                />
+                <x-laravel-admin::admin.stat label="저장된 버전" value="{{ $versions->total() }}" />
             </div>
 
-            <div class="mx-auto mt-6 max-w-4xl rounded-md border border-indigo-200 bg-indigo-50 p-4 text-sm text-indigo-900 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-200">
-                <p class="font-semibold">활용 순서</p>
-                <p class="mt-1">페이지 수정 화면에서 본문을 작성한 뒤 이 화면에서 버전 라벨과 시행일을 입력해 저장합니다. 저장된 버전의 내용을 확인한 다음 공개하면 해당 버전 본문이 실제 공개 페이지 본문으로 반영됩니다.</p>
-            </div>
+            <x-laravel-admin::admin.notice type="info" title="활용 순서" message="페이지 수정 화면에서 본문을 작성한 뒤 이 화면에서 버전 라벨과 시행일을 입력해 저장합니다. 저장된 버전의 내용을 확인한 다음 공개하면 해당 버전 본문이 실제 공개 페이지 본문으로 반영됩니다." class="mx-auto mt-6 max-w-4xl" />
 
             <form method="post" action="{{ route('page.admin.versions.store', $page) }}" class="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-x-8 rounded-md border border-gray-200 bg-white p-6 text-gray-900 shadow-sm md:grid-cols-12 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
                 @csrf
@@ -66,25 +55,23 @@
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                             <label for="version-label" class="block text-sm font-medium text-gray-900 dark:text-white">버전 라벨</label>
-                            <input id="version-label" name="version_label" placeholder="예: 2026년 6월 개정" class="mt-2 block h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 shadow-sm outline-none placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
+                            <x-laravel-admin::admin.form-input id="version-label" name="version_label" placeholder="예: 2026년 6월 개정" />
                         </div>
                         <div>
                             <label for="effective-date" class="block text-sm font-medium text-gray-900 dark:text-white">시행일</label>
-                            <input id="effective-date" name="effective_date" type="date" class="mt-2 block h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
+                            <x-laravel-admin::admin.form-input id="effective-date" name="effective_date" type="date" />
                         </div>
                     </div>
                     <div class="flex justify-end">
-                        <button class="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-indigo-600 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
-                            <i class="fa-regular fa-floppy-disk mr-2 text-xs" aria-hidden="true"></i>
+                        <x-laravel-admin::admin.action-button type="submit" icon="file-lines">
                             버전 저장
-                        </button>
+                        </x-laravel-admin::admin.action-button>
                     </div>
                 </div>
             </form>
 
-            <div class="mt-8 flow-root">
-                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="mt-8">
+                <x-laravel-admin::admin.table-shell>
                         <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                             <thead>
                                 <tr>
@@ -113,30 +100,29 @@
                                         <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-600 sm:table-cell dark:text-gray-300">{{ $version->effective_date?->format('Y-m-d') ?: '-' }}</td>
                                         <td class="px-3 py-4 text-sm whitespace-nowrap">
                                             @if($publishedVersion?->is($version))
-                                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-500/10 dark:text-green-300 dark:ring-green-500/20">공개 중</span>
+                                                <x-laravel-admin::admin.badge variant="success">공개 중</x-laravel-admin::admin.badge>
                                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $version->published_at?->format('Y-m-d H:i') }}</p>
                                             @elseif($version->published_at)
-                                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-500/10 ring-inset dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">이전 공개본</span>
+                                                <x-laravel-admin::admin.badge>이전 공개본</x-laravel-admin::admin.badge>
                                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $version->published_at->format('Y-m-d H:i') }}</p>
                                             @else
-                                                <span class="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-600/20 ring-inset dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20">미공개</span>
+                                                <x-laravel-admin::admin.badge variant="warning">미공개</x-laravel-admin::admin.badge>
                                             @endif
                                         </td>
                                         <td class="hidden px-3 py-4 text-sm lg:table-cell">
                                             @if($version->body === $page->body)
-                                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-500/10 dark:text-green-300 dark:ring-green-500/20">동일</span>
+                                                <x-laravel-admin::admin.badge variant="success">동일</x-laravel-admin::admin.badge>
                                             @else
-                                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-500/10 ring-inset dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">다름</span>
+                                                <x-laravel-admin::admin.badge>다름</x-laravel-admin::admin.badge>
                                             @endif
                                         </td>
                                         <td class="py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
                                             @if(! $publishedVersion?->is($version))
                                                 <form method="post" action="{{ route('page.admin.versions.publish', [$page, $version]) }}" class="inline">
                                                     @csrf
-                                                    <button class="inline-flex items-center rounded-md px-2 py-1 text-sm font-semibold !text-indigo-600 hover:bg-indigo-50 hover:no-underline dark:!text-indigo-300 dark:hover:bg-indigo-500/10">
-                                                        <i class="fa-solid fa-upload mr-1.5 text-xs" aria-hidden="true"></i>
+                                                    <x-laravel-admin::admin.action-button variant="link" size="sm" type="submit" icon="arrow-up">
                                                         공개
-                                                    </button>
+                                                    </x-laravel-admin::admin.action-button>
                                                 </form>
                                             @else
                                                 <span class="text-sm text-gray-400 dark:text-gray-500">공개 중</span>
@@ -144,15 +130,13 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="5" class="px-3 py-16 text-center text-sm text-gray-500 dark:text-gray-400">저장된 버전이 없습니다. 현재 본문으로 첫 개정본을 저장해보세요.</td></tr>
+                                    <x-laravel-admin::admin.table-empty-row colspan="5" message="저장된 버전이 없습니다. 현재 본문으로 첫 개정본을 저장해보세요." />
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-                </div>
+                </x-laravel-admin::admin.table-shell>
             </div>
 
             <div class="mt-6 text-sm">{{ $versions->links() }}</div>
-        </div>
-    </div>
+    </x-laravel-admin::admin.page-section>
 </x-laravel-admin::admin.layouts.admin>

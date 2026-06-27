@@ -1,65 +1,47 @@
 <x-laravel-admin::admin.layouts.admin title="페이지 목록">
     @php
-        $statusBadgeClasses = [
-            'draft' => 'bg-amber-50 text-amber-700 ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20',
-            'published' => 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-500/10 dark:text-green-300 dark:ring-green-500/20',
-            'hidden' => 'bg-gray-50 text-gray-700 ring-gray-500/10 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700',
-        ];
+        $typeFilterOptions = collect($types)->mapWithKeys(fn ($type, $key) => [$key => $type['label'] ?? $key])->all();
     @endphp
 
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('home') }}">HOME</a>
-                - <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
+                <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
             </x-slot>
             <x-slot name="description">Page List</x-slot>
         </x-laravel-admin::admin.admin-header>
     </x-slot>
 
-    <div class="w-full bg-white px-2 py-2 dark:bg-gray-900">
-        <div class="min-h-[560px] bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 목록</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">공개 페이지의 상태, 타입, SEO 정보를 관리합니다.</p>
-                </div>
-                <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <a href="{{ route('page.admin.pages.create') }}" class="inline-flex h-9 items-center justify-center rounded-md bg-indigo-600 px-3 text-sm font-semibold !text-white shadow-sm hover:bg-indigo-500 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
-                        <i class="fa-solid fa-plus mr-2 text-xs" aria-hidden="true"></i>
-                        등록하기
-                    </a>
-                </div>
-            </div>
+    <x-laravel-admin::admin.page-section title="페이지 목록" description="공개 페이지의 상태, 타입, SEO 정보를 관리합니다.">
+            <x-slot name="actions">
+                <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.create') }}" icon="plus">
+                    등록하기
+                </x-laravel-admin::admin.action-button>
+            </x-slot>
 
             <x-laravel-admin::admin.session-messages />
 
-            <form method="get" class="mt-6 flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:flex-nowrap sm:items-center dark:border-gray-700 dark:bg-gray-800/70">
-                <label for="page-type" class="sr-only">전체 타입</label>
-                <select id="page-type" name="type" class="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 sm:w-40 sm:shrink-0 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
-                    <option value="">전체 타입</option>
-                    @foreach($types as $key => $type)
-                        <option value="{{ $key }}" @selected(request('type') === $key)>{{ $type['label'] ?? $key }}</option>
-                    @endforeach
-                </select>
-                <label for="page-status" class="sr-only">전체 상태</label>
-                <select id="page-status" name="status" class="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 sm:w-40 sm:shrink-0 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
-                    <option value="">전체 상태</option>
-                    @foreach($statuses as $key => $label)
-                        <option value="{{ $key }}" @selected(request('status') === $key)>{{ $label }}</option>
-                    @endforeach
-                </select>
-                <label for="page-search" class="sr-only">제목, slug 검색</label>
-                <input id="page-search" name="search" value="{{ request('search') }}" placeholder="제목, slug 검색" class="h-10 min-w-0 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 shadow-sm outline-none placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 sm:flex-1 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
-                <button type="submit" class="inline-flex h-10 min-w-20 cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-gray-900 px-4 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 sm:shrink-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
-                    <i class="fa-solid fa-magnifying-glass mr-2 text-xs" aria-hidden="true"></i>
+            <x-laravel-admin::admin.filter-bar method="get">
+                <x-laravel-admin::admin.filter-select
+                    name="type"
+                    selected="{{ request('type') }}"
+                    placeholder="전체 타입"
+                    :options="$typeFilterOptions"
+                />
+                <x-laravel-admin::admin.filter-select
+                    name="status"
+                    selected="{{ request('status') }}"
+                    placeholder="전체 상태"
+                    :options="$statuses"
+                />
+                <x-laravel-admin::admin.search-input name="search" value="{{ request('search') }}" placeholder="제목, slug 검색" clear-href="{{ route('page.admin.pages.index') }}" class="sm:flex-1" />
+                <x-laravel-admin::admin.action-button variant="search" type="submit" icon="magnifying-glass">
                     검색
-                </button>
-            </form>
+                </x-laravel-admin::admin.action-button>
+            </x-laravel-admin::admin.filter-bar>
 
-            <div class="mt-6 flow-root">
-                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="mt-6">
+                <x-laravel-admin::admin.table-shell>
                         <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                             <thead>
                                 <tr>
@@ -88,36 +70,33 @@
                                         </td>
                                         <td class="hidden px-3 py-4 text-sm text-gray-600 sm:table-cell dark:text-gray-300">{{ $types[$page->type]['label'] ?? $page->type }}</td>
                                         <td class="px-3 py-4 text-sm whitespace-nowrap">
-                                            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset {{ $statusBadgeClasses[$page->status] ?? $statusBadgeClasses['hidden'] }}">{{ $statuses[$page->status] ?? $page->status }}</span>
+                                            <x-laravel-admin::admin.badge :variant="$page->status === 'published' ? 'success' : ($page->status === 'draft' ? 'warning' : 'neutral')">
+                                                {{ $statuses[$page->status] ?? $page->status }}
+                                            </x-laravel-admin::admin.badge>
                                         </td>
                                         <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-600 lg:table-cell dark:text-gray-300">{{ $page->published_at?->format('Y-m-d') ?: '-' }}</td>
                                         <td class="py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
-                                            <a href="{{ route('page.admin.pages.show', $page) }}" class="inline-flex items-center rounded-md px-2 py-1 text-sm font-semibold !text-indigo-600 hover:bg-indigo-50 hover:no-underline dark:!text-indigo-300 dark:hover:bg-indigo-500/10">
-                                                <i class="fa-regular fa-eye mr-1.5 text-xs" aria-hidden="true"></i>
+                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="link" size="sm" icon="eye">
                                                 상세
-                                            </a>
+                                            </x-laravel-admin::admin.action-button>
                                             @if(in_array($page->type, ['terms', 'privacy', 'policy'], true))
-                                                <a href="{{ route('page.admin.versions.index', $page) }}" class="ml-1 inline-flex items-center rounded-md px-2 py-1 text-sm font-semibold !text-indigo-600 hover:bg-indigo-50 hover:no-underline dark:!text-indigo-300 dark:hover:bg-indigo-500/10">
-                                                    <i class="fa-solid fa-clock-rotate-left mr-1.5 text-xs" aria-hidden="true"></i>
+                                                <x-laravel-admin::admin.action-button href="{{ route('page.admin.versions.index', $page) }}" variant="link" size="sm" icon="file-lines" class="ml-1">
                                                     개정 이력
-                                                </a>
+                                                </x-laravel-admin::admin.action-button>
                                             @endif
-                                            <a href="{{ route('page.admin.pages.edit', $page) }}" class="ml-1 inline-flex items-center rounded-md px-2 py-1 text-sm font-semibold !text-indigo-600 hover:bg-indigo-50 hover:no-underline dark:!text-indigo-300 dark:hover:bg-indigo-500/10">
-                                                <i class="fa-regular fa-pen-to-square mr-1.5 text-xs" aria-hidden="true"></i>
+                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.edit', $page) }}" variant="link" size="sm" icon="pen-to-square" class="ml-1">
                                                 수정
-                                            </a>
+                                            </x-laravel-admin::admin.action-button>
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="5" class="px-3 py-16 text-center text-sm text-gray-500 dark:text-gray-400">등록된 페이지가 없습니다.</td></tr>
+                                    <x-laravel-admin::admin.table-empty-row colspan="5" message="등록된 페이지가 없습니다." />
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-                </div>
+                </x-laravel-admin::admin.table-shell>
             </div>
 
             <div class="mt-6 text-sm">{{ $pages->links() }}</div>
-        </div>
-    </div>
+    </x-laravel-admin::admin.page-section>
 </x-laravel-admin::admin.layouts.admin>
