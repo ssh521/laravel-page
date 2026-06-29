@@ -14,6 +14,19 @@ class PageController extends Controller
 {
     public function index(Request $request): View
     {
+        $sortableFields = [
+            'title' => 'title',
+            'type' => 'type',
+            'status' => 'status',
+            'published_at' => 'published_at',
+            'sort_order' => 'sort_order',
+            'created_at' => 'created_at',
+        ];
+        $sortField = array_key_exists($request->string('sortField')->toString(), $sortableFields)
+            ? $request->string('sortField')->toString()
+            : 'sort_order';
+        $sortDirection = $request->string('sortDirection')->toString() === 'desc' ? 'desc' : 'asc';
+
         $pages = Page::query()
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->string('search')->toString();
@@ -26,8 +39,8 @@ class PageController extends Controller
             })
             ->when($request->filled('type'), fn ($query) => $query->where('type', $request->string('type')))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
-            ->orderBy('sort_order')
-            ->latest()
+            ->orderBy($sortableFields[$sortField], $sortDirection)
+            ->orderByDesc('created_at')
             ->paginate(20)
             ->withQueryString();
 
