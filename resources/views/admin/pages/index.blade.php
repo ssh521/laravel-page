@@ -10,18 +10,28 @@
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
+                <a href="{{ route('admin.index') }}">관리자 홈</a>
+                - <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
             </x-slot>
-            <x-slot name="description">Page List</x-slot>
+            <x-slot name="description">페이지 목록</x-slot>
         </x-laravel-admin::admin.admin-header>
     </x-slot>
 
-    <x-laravel-admin::admin.page-section title="페이지 목록" description="공개 페이지의 상태, 타입, SEO 정보를 관리합니다.">
-            <x-slot name="actions">
-                <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.create') }}" icon="plus">
-                    등록하기
-                </x-laravel-admin::admin.action-button>
-            </x-slot>
+    <div class="w-full bg-white px-2 py-2 dark:bg-gray-900">
+        <div class="min-h-[560px] bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div class="sm:flex-auto">
+                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 목록</h1>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
+                        공개 페이지의 상태, 타입, SEO 정보를 관리합니다.
+                    </p>
+                </div>
+                <div class="mt-4 flex gap-2 sm:mt-0 sm:ml-16 sm:flex-none">
+                    <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.create') }}" size="sm" icon="plus">
+                        등록하기
+                    </x-laravel-admin::admin.action-button>
+                </div>
+            </div>
 
             <x-laravel-admin::admin.session-messages />
 
@@ -60,7 +70,7 @@
                         name="search"
                         value="{{ request('search') }}"
                         placeholder="제목, slug 검색"
-                        class="h-10 w-full pr-9"
+                        class="w-full h-10 pr-9"
                     />
                     @if(request('search') || request('type') || request('status'))
                         <a href="{{ route('page.admin.pages.index') }}"
@@ -75,8 +85,9 @@
                 </x-laravel-admin::admin.action-button>
             </x-laravel-admin::admin.filter-bar>
 
-            <div class="mt-6">
-                <x-laravel-admin::admin.table-shell>
+            <div class="mt-6 flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                         <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                             <thead class="border-y border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/80">
                                 <tr>
@@ -153,15 +164,15 @@
                                         </td>
                                         <td class="hidden px-3 py-3 text-center text-sm whitespace-nowrap text-gray-600 lg:table-cell dark:text-gray-300">{{ $page->published_at?->format('Y-m-d') ?: '-' }}</td>
                                         <td class="py-3 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
-                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="link" size="sm" icon="eye">
-                                                상세
+                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="link" size="sm" icon="eye" class="h-auto px-2 py-1">
+                                                보기
                                             </x-laravel-admin::admin.action-button>
                                             @if(in_array($page->type, ['terms', 'privacy', 'policy'], true))
-                                                <x-laravel-admin::admin.action-button href="{{ route('page.admin.versions.index', $page) }}" variant="link" size="sm" icon="file-lines" class="ml-1">
+                                                <x-laravel-admin::admin.action-button href="{{ route('page.admin.versions.index', $page) }}" variant="link" size="sm" icon="file-lines" class="ml-1 h-auto px-2 py-1">
                                                     개정 이력
                                                 </x-laravel-admin::admin.action-button>
                                             @endif
-                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.edit', $page) }}" variant="link" size="sm" icon="pen-to-square" class="ml-1">
+                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.edit', $page) }}" variant="link" size="sm" icon="pen-to-square" class="ml-1 h-auto px-2 py-1">
                                                 수정
                                             </x-laravel-admin::admin.action-button>
                                         </td>
@@ -171,9 +182,13 @@
                                 @endforelse
                             </tbody>
                         </table>
-                </x-laravel-admin::admin.table-shell>
+                    </div>
+                </div>
             </div>
 
-            <div class="mt-6 text-sm">{{ $pages->links() }}</div>
-    </x-laravel-admin::admin.page-section>
+            <div class="mt-6 text-sm">
+                {{ $pages->withQueryString()->links() }}
+            </div>
+        </div>
+    </div>
 </x-laravel-admin::admin.layouts.admin>

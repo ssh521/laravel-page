@@ -2,25 +2,21 @@
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
-                - <a href="{{ route('page.admin.pages.index') }}">목록</a>
+                <a href="{{ route('admin.index') }}">관리자 홈</a>
+                - <a href="{{ route('page.admin.pages.index') }}">페이지 목록</a>
+                - 수정
             </x-slot>
-            <x-slot name="description">Edit Page</x-slot>
+            <x-slot name="description">페이지 정보 수정</x-slot>
         </x-laravel-admin::admin.admin-header>
     </x-slot>
 
     <div class="mx-auto w-full max-w-5xl bg-white px-2 py-2 dark:bg-gray-900">
         <div class="min-h-[450px] bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
-            <div class="mx-auto flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 정보 수정</h1>
-                    <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{{ $page->title }}</p>
-                </div>
-                <div class="flex shrink-0">
-                    <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="secondary" size="sm" icon="eye">
-                        상세보기
-                    </x-laravel-admin::admin.action-button>
-                </div>
+            <div class="mx-auto max-w-4xl">
+                <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 정보 수정</h1>
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                    페이지의 기본 정보, 공개 상태, SEO 정보를 수정합니다.
+                </p>
             </div>
 
             <x-laravel-admin::admin.session-messages />
@@ -48,7 +44,7 @@
                         취소
                     </x-laravel-admin::admin.action-button>
                     <x-laravel-admin::admin.action-button type="submit" form="page-edit-form">
-                        저장하기
+                        수정하기
                     </x-laravel-admin::admin.action-button>
                 </div>
             </div>

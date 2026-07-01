@@ -2,9 +2,11 @@
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('page.admin.pages.show', $page) }}">{{ $page->title }}</a>
+                <a href="{{ route('admin.index') }}">관리자 홈</a>
+                - <a href="{{ route('page.admin.pages.index') }}">페이지 목록</a>
+                - 버전 이력
             </x-slot>
-            <x-slot name="description">Page Versions</x-slot>
+            <x-slot name="description">페이지 버전 이력</x-slot>
         </x-laravel-admin::admin.admin-header>
     </x-slot>
 

@@ -2,8 +2,9 @@
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
-                - <a href="{{ route('page.admin.pages.index') }}">목록</a>
+                <a href="{{ route('admin.index') }}">관리자 홈</a>
+                - <a href="{{ route('page.admin.pages.index') }}">페이지 목록</a>
+                - 등록
             </x-slot>
             <x-slot name="description">Create Page</x-slot>
         </x-laravel-admin::admin.admin-header>

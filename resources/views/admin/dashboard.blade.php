@@ -2,8 +2,8 @@
     <x-slot name="header">
         <x-laravel-admin::admin.admin-header>
             <x-slot name="navigation">
-                <a href="{{ route('home') }}">HOME</a>
-                - <a href="{{ route('admin.index') }}">관리자 홈</a>
+                <a href="{{ route('admin.index') }}">관리자 홈</a>
+                - <a href="{{ route('page.admin.dashboard') }}">페이지 관리</a>
             </x-slot>
             <x-slot name="description">Page CMS</x-slot>
         </x-laravel-admin::admin.admin-header>
