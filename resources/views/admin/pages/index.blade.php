@@ -164,17 +164,21 @@
                                         </td>
                                         <td class="hidden px-3 py-3 text-center text-sm whitespace-nowrap text-gray-600 lg:table-cell dark:text-gray-300">{{ $page->published_at?->format('Y-m-d') ?: '-' }}</td>
                                         <td class="py-3 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
-                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="link" size="sm" icon="eye" class="h-auto px-2 py-1">
-                                                보기
-                                            </x-laravel-admin::admin.action-button>
-                                            @if(in_array($page->type, ['terms', 'privacy', 'policy'], true))
-                                                <x-laravel-admin::admin.action-button href="{{ route('page.admin.versions.index', $page) }}" variant="link" size="sm" icon="file-lines" class="ml-1 h-auto px-2 py-1">
-                                                    개정 이력
-                                                </x-laravel-admin::admin.action-button>
-                                            @endif
-                                            <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.edit', $page) }}" variant="link" size="sm" icon="pen-to-square" class="ml-1 h-auto px-2 py-1">
-                                                수정
-                                            </x-laravel-admin::admin.action-button>
+                                            <div class="flex justify-end">
+                                                <x-laravel-admin::admin.action-menu>
+                                                    <x-laravel-admin::admin.dropdown-link :href="route('page.admin.pages.show', $page)" class="rounded-lg px-6 py-1 text-left text-base leading-6 !text-gray-950 hover:!bg-blue-500 hover:!text-white hover:!no-underline focus:!bg-blue-500 focus:!text-white dark:!text-gray-100">
+                                                        보기
+                                                    </x-laravel-admin::admin.dropdown-link>
+                                                    @if(in_array($page->type, ['terms', 'privacy', 'policy'], true))
+                                                        <x-laravel-admin::admin.dropdown-link :href="route('page.admin.versions.index', $page)" class="rounded-lg px-6 py-1 text-left text-base leading-6 !text-gray-950 hover:!bg-blue-500 hover:!text-white hover:!no-underline focus:!bg-blue-500 focus:!text-white dark:!text-gray-100">
+                                                            개정 이력
+                                                        </x-laravel-admin::admin.dropdown-link>
+                                                    @endif
+                                                    <x-laravel-admin::admin.dropdown-link :href="route('page.admin.pages.edit', $page)" class="rounded-lg px-6 py-1 text-left text-base leading-6 !text-gray-950 hover:!bg-blue-500 hover:!text-white hover:!no-underline focus:!bg-blue-500 focus:!text-white dark:!text-gray-100">
+                                                        수정
+                                                    </x-laravel-admin::admin.dropdown-link>
+                                                </x-laravel-admin::admin.action-menu>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
