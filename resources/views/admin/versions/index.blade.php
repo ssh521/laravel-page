@@ -22,7 +22,7 @@
             >
                 <x-slot name="actions">
                     <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.show', $page) }}" variant="secondary" icon="eye">
-                        상세보기
+                        보기
                     </x-laravel-admin::admin.action-button>
                 </x-slot>
             </x-laravel-admin::admin.page-header>
