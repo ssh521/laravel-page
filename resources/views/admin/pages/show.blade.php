@@ -1,14 +1,6 @@
 <x-laravel-admin::admin.layouts.admin title="페이지 상세">
     @php
         $statusVariant = $page->status === 'published' ? 'success' : ($page->status === 'draft' ? 'warning' : 'neutral');
-        $pageDetails = [
-            '타입' => config("laravel-page.types.{$page->type}.label", $page->type),
-            '공개일' => $page->published_at?->format('Y-m-d H:i') ?: '-',
-            '정렬' => $page->sort_order,
-            'Meta title' => $page->meta_title ?: '-',
-            'Canonical URL' => $page->canonical_url ?: '-',
-            '요약' => $page->summary ?: '-',
-        ];
     @endphp
 
     <x-slot name="header">
@@ -54,14 +46,58 @@
                 </div>
 
                 <div class="px-4 py-6 sm:px-6">
-                    <dl class="grid grid-cols-1 sm:grid-cols-2">
-                        @foreach($pageDetails as $term => $description)
-                            <div class="border-t border-gray-100 px-0 py-5 sm:col-span-1 sm:px-0 dark:border-gray-800">
-                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ $term }}</dt>
-                                <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $description }}</dd>
+                    <div class="space-y-8">
+                        <section>
+                            <div class="mb-4">
+                                <h3 class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">기본 정보</h3>
+                                <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">페이지 타입, 상태, 공개 정보를 확인합니다.</p>
                             </div>
-                        @endforeach
-                    </dl>
+                            <dl class="grid grid-cols-1 border-t border-gray-100 sm:grid-cols-2 dark:border-gray-800">
+                                <div class="px-0 py-4 sm:px-0 sm:py-5">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">타입</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ config("laravel-page.types.{$page->type}.label", $page->type) }}</dd>
+                                </div>
+                                <div class="border-t border-gray-100 px-0 py-4 sm:border-t-0 sm:px-0 sm:py-5 dark:border-gray-800">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">공개일</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $page->published_at?->format('Y-m-d H:i') ?: '-' }}</dd>
+                                </div>
+                                <div class="border-t border-gray-100 px-0 py-4 sm:px-0 sm:py-5 dark:border-gray-800">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">정렬</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $page->sort_order }}</dd>
+                                </div>
+                            </dl>
+                        </section>
+
+                        <section class="border-t border-gray-200 pt-6 dark:border-gray-700">
+                            <div class="mb-4">
+                                <h3 class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">SEO</h3>
+                                <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">검색과 공유 링크에 사용하는 메타 정보입니다.</p>
+                            </div>
+                            <dl class="grid grid-cols-1 border-t border-gray-100 sm:grid-cols-2 dark:border-gray-800">
+                                <div class="px-0 py-4 sm:px-0 sm:py-5">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">Meta title</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $page->meta_title ?: '-' }}</dd>
+                                </div>
+                                <div class="border-t border-gray-100 px-0 py-4 sm:border-t-0 sm:px-0 sm:py-5 dark:border-gray-800">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">Canonical URL</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $page->canonical_url ?: '-' }}</dd>
+                                </div>
+                            </dl>
+                        </section>
+
+                        <section class="border-t border-gray-200 pt-6 dark:border-gray-700">
+                            <div class="mb-4">
+                                <h3 class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">요약</h3>
+                                <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">목록과 메타 설명에 사용할 짧은 설명입니다.</p>
+                            </div>
+                            <dl class="border-t border-gray-100 dark:border-gray-800">
+                                <div class="px-0 py-4 sm:px-0 sm:py-5">
+                                    <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">요약</dt>
+                                    <dd class="mt-1 break-words text-sm leading-6 text-gray-700 sm:mt-2 dark:text-gray-300">{{ $page->summary ?: '-' }}</dd>
+                                </div>
+                            </dl>
+                        </section>
+                    </div>
                 </div>
 
                 <div class="border-t border-gray-200 px-4 py-6 sm:px-6 dark:border-gray-700">

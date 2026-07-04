@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-8">
+    <div class="mt-6 md:col-span-8 md:mt-0">
         <div class="space-y-5">
             <x-laravel-admin::admin.field name="template" label="템플릿">
                 <div class="flex flex-col gap-2 sm:flex-row">
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-12 dark:border-white/10 border-b border-gray-900/10 my-10"></div>
+    <div class="md:col-span-12 dark:border-white/10 mt-8 mb-6 border-b border-gray-900/10 sm:my-10"></div>
 
     <div class="md:col-span-4">
         <div class="flex flex-col">
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-8">
+    <div class="mt-6 md:col-span-8 md:mt-0">
         <div class="space-y-5">
             <x-laravel-admin::admin.field name="summary" label="요약">
                 <x-laravel-admin::admin.form-textarea id="summary" name="summary" rows="3">{{ old('summary', $page->summary) }}</x-laravel-admin::admin.form-textarea>
@@ -180,7 +180,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-12 dark:border-white/10 border-b border-gray-900/10 my-10"></div>
+    <div class="md:col-span-12 dark:border-white/10 mt-8 mb-6 border-b border-gray-900/10 sm:my-10"></div>
 
     <div class="md:col-span-4">
         <div class="flex flex-col">
@@ -189,7 +189,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-8">
+    <div class="mt-6 md:col-span-8 md:mt-0">
         <div class="space-y-5">
             <x-laravel-admin::admin.field name="meta_title" label="Meta title">
                 <x-laravel-admin::admin.form-input id="meta_title" name="meta_title" value="{{ old('meta_title', $page->meta_title) }}" class="w-full" />
@@ -217,7 +217,7 @@
         </div>
     </div>
 
-    <div class="md:col-span-12 dark:border-white/10 border-b border-gray-900/10 my-10"></div>
+    <div class="md:col-span-12 dark:border-white/10 mt-8 mb-6 border-b border-gray-900/10 sm:my-10"></div>
 
     @if($showActions ?? true)
         <div class="col-span-full flex items-center justify-end gap-x-3">
