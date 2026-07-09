@@ -3,6 +3,7 @@
 namespace Ssh521\LaravelPage\Tests\Feature;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 use Ssh521\LaravelPage\Tests\TestCase;
 
 class LaravelPageRegistrationTest extends TestCase
@@ -20,6 +21,22 @@ class LaravelPageRegistrationTest extends TestCase
         $this->assertRouteHasMiddleware('page.admin.pages.index', 'can:laravel-page-pages-view');
         $this->assertRouteHasMiddleware('page.admin.pages.create', 'can:laravel-page-pages-create');
         $this->assertRouteHasMiddleware('page.admin.pages.edit', 'can:laravel-page-pages-update');
+    }
+
+    public function test_admin_page_list_uses_shared_list_design_contract(): void
+    {
+        $index = File::get(dirname(__DIR__, 2).'/resources/views/admin/pages/index.blade.php');
+
+        $this->assertStringContainsString('x-data="{ filtersOpen: false }"', $index);
+        $this->assertStringContainsString('x-laravel-admin::admin.filter-bar', $index);
+        $this->assertStringContainsString(':mobile-toggle="false"', $index);
+        $this->assertStringContainsString('filtersOpen = ! filtersOpen', $index);
+        $this->assertStringContainsString('x-laravel-admin::admin.table-shell', $index);
+        $this->assertStringContainsString('x-laravel-admin::admin.action-menu', $index);
+        $this->assertStringContainsString('justify-start gap-1 !text-gray-900', $index);
+        $this->assertStringContainsString('md:justify-center', $index);
+        $this->assertStringContainsString('text-left text-sm font-semibold text-gray-900 sm:pl-0 md:text-center', $index);
+        $this->assertStringContainsString('font-semibold whitespace-nowrap text-gray-900', $index);
     }
 
     private function assertRouteHasMiddleware(string $routeName, string $middleware): void

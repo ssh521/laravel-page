@@ -4,7 +4,7 @@
         $currentSortField = request('sortField', 'sort_order');
         $currentSortDirection = request('sortDirection', 'asc') === 'desc' ? 'desc' : 'asc';
         $getNextSortDirection = fn (string $field): string => $currentSortField === $field && $currentSortDirection === 'asc' ? 'desc' : 'asc';
-        $sortLinkClass = 'inline-flex items-center justify-center gap-1 !text-gray-900 hover:!text-indigo-600 hover:no-underline dark:!text-white dark:hover:!text-indigo-400';
+        $sortLinkClass = 'inline-flex items-center justify-start gap-1 !text-gray-900 hover:!text-indigo-600 hover:no-underline md:justify-center dark:!text-white dark:hover:!text-indigo-400';
     @endphp
 
     <x-slot name="header">
@@ -18,7 +18,7 @@
     </x-slot>
 
     <div class="w-full bg-white px-2 py-2 dark:bg-gray-900">
-        <div class="min-h-[560px] bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
+        <div class="min-h-[560px] bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900" x-data="{ filtersOpen: false }">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div class="sm:flex-auto">
                     <h1 class="text-2xl font-semibold leading-7 text-gray-900 dark:text-white">페이지 목록</h1>
@@ -30,12 +30,22 @@
                     <x-laravel-admin::admin.action-button href="{{ route('page.admin.pages.create') }}" size="sm" icon="plus">
                         등록하기
                     </x-laravel-admin::admin.action-button>
+                    <x-laravel-admin::admin.action-button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        class="sm:hidden"
+                        x-bind:aria-expanded="filtersOpen.toString()"
+                        @click="filtersOpen = ! filtersOpen"
+                    >
+                        <span x-text="filtersOpen ? @js('검색/필터 닫기') : @js('검색/필터')"></span>
+                    </x-laravel-admin::admin.action-button>
                 </div>
             </div>
 
             <x-laravel-admin::admin.session-messages />
 
-            <x-laravel-admin::admin.filter-bar action="{{ route('page.admin.pages.index') }}">
+            <x-laravel-admin::admin.filter-bar action="{{ route('page.admin.pages.index') }}" :mobile-toggle="false">
                 @if(request('sortField'))
                     <input type="hidden" name="sortField" value="{{ request('sortField') }}">
                 @endif
@@ -85,13 +95,11 @@
                 </x-laravel-admin::admin.action-button>
             </x-laravel-admin::admin.filter-bar>
 
-            <div class="mt-6 flow-root">
-                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <x-laravel-admin::admin.table-shell class="mt-6">
                         <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                             <thead class="border-y border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/80">
                                 <tr>
-                                    <th scope="col" class="py-3 pr-3 pl-4 text-center text-sm font-semibold text-gray-900 sm:pl-0 dark:text-white">
+                                    <th scope="col" class="py-3 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0 md:text-center dark:text-white">
                                         <a href="{{ route('page.admin.pages.index', array_merge(request()->query(), ['sortField' => 'title', 'sortDirection' => $getNextSortDirection('title')])) }}" class="{{ $sortLinkClass }}">
                                             <span>페이지</span>
                                             @if($currentSortField === 'title')
@@ -112,7 +120,7 @@
                                             @endif
                                         </a>
                                     </th>
-                                    <th scope="col" class="px-3 py-3 text-center text-sm font-semibold text-gray-900 dark:text-white">
+                                    <th scope="col" class="px-3 py-3 text-center text-sm font-semibold whitespace-nowrap text-gray-900 dark:text-white">
                                         <a href="{{ route('page.admin.pages.index', array_merge(request()->query(), ['sortField' => 'status', 'sortDirection' => $getNextSortDirection('status')])) }}" class="{{ $sortLinkClass }}">
                                             <span>상태</span>
                                             @if($currentSortField === 'status')
@@ -122,7 +130,7 @@
                                             @endif
                                         </a>
                                     </th>
-                                    <th scope="col" class="hidden px-3 py-3 text-center text-sm font-semibold text-gray-900 lg:table-cell dark:text-white">
+                                    <th scope="col" class="hidden px-3 py-3 text-center text-sm font-semibold whitespace-nowrap text-gray-900 lg:table-cell dark:text-white">
                                         <a href="{{ route('page.admin.pages.index', array_merge(request()->query(), ['sortField' => 'published_at', 'sortDirection' => $getNextSortDirection('published_at')])) }}" class="{{ $sortLinkClass }}">
                                             <span>공개일</span>
                                             @if($currentSortField === 'published_at')
@@ -186,9 +194,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
+            </x-laravel-admin::admin.table-shell>
 
             <div class="mt-6 text-sm">
                 {{ $pages->withQueryString()->links() }}
